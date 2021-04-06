@@ -2,6 +2,8 @@ import UIKit
 
 /// A `UIView` subclass that layouts its managed subviews in a list layout with scrolling.
 open class ListScrollView: UIView {
+    // MARK: - Type Definition
+
     public enum Size {
         /// When set to `fill`, the stack view fills the entire available space of the current view,
         /// i.e. the current view's width subtracted by the horizontal content insets.
@@ -19,6 +21,8 @@ open class ListScrollView: UIView {
         /// Indicates that the stack view aligns to the right of current view, as `natural` size being set.
         case right
     }
+
+    // MARK: - Property
 
     /// Describes the filling behavior of the stack view.
     public final var size: Size = .fill {
@@ -51,7 +55,7 @@ open class ListScrollView: UIView {
 
     private var constraintsForStackView: [NSLayoutConstraint] = []
 
-    // MARK: Initializer
+    // MARK: - Initializer
 
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -98,6 +102,7 @@ extension ListScrollView {
 
 extension ListScrollView {
     /// The default spacings among all managed subviews (8 points by default).
+    @IBInspectable
     public final var spacing: CGFloat {
         get {
             return stackView.spacing
@@ -107,8 +112,8 @@ extension ListScrollView {
         }
     }
 
-
     /// The `distribution` property of the list-managing stack view (`fill` by default)
+    @IBInspectable
     public final var distribution: UIStackView.Distribution {
         get {
             return stackView.distribution
@@ -119,6 +124,7 @@ extension ListScrollView {
     }
 
     /// The `alignment` property of the list-managing stack view (`fill` by default)
+    @IBInspectable
     public final var alignment: UIStackView.Alignment {
         get {
             return stackView.alignment
@@ -129,7 +135,7 @@ extension ListScrollView {
     }
 }
 
-// MARK: - Private
+// MARK: - UI Method
 
 extension ListScrollView {
     private func sharedInit() {

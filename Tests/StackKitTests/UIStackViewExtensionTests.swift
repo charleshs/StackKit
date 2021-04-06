@@ -16,6 +16,14 @@ final class UIStackViewExtensionTests: XCTestCase {
         newView = UIView()
     }
 
+    override func tearDownWithError() throws {
+        aView = nil
+        bView = nil
+        cView = nil
+        dView = nil
+        newView = nil
+    }
+
     func testConvenienceInit() {
         let stackView = UIStackView(axis: .vertical, alignment: .firstBaseline, distribution: .equalCentering, spacing: 87)
 
@@ -27,7 +35,7 @@ final class UIStackViewExtensionTests: XCTestCase {
 
     func testAddArrangedSubviews() {
         let stackView = UIStackView()
-        let subviews: [UIView] = (0..<5).map { _ in UIView() }
+        let subviews: [UIView] = (0 ..< 5).map { _ in .init() }
 
         stackView.addArrangedSubviews(subviews)
 
@@ -36,7 +44,7 @@ final class UIStackViewExtensionTests: XCTestCase {
 
     func testRemoveAllArrangedSubviews() {
         let stackView = UIStackView()
-        let subviews: [UIView] = (0..<5).map { _ in UIView() }
+        let subviews: [UIView] = (0 ..< 5).map { _ in .init() }
         stackView.addArrangedSubviews(subviews)
         XCTAssertFalse(stackView.arrangedSubviews.isEmpty)
 
@@ -45,20 +53,20 @@ final class UIStackViewExtensionTests: XCTestCase {
         XCTAssertTrue(stackView.arrangedSubviews.isEmpty)
     }
 
-    func testAddArrangedSubviewWithCustomSpacing() {
+    func testAddArrangedSubviewCustomSpacing() {
         let stackView = UIStackView(arrangedSubviews: [aView, bView, cView])
-
         let newView = UIView()
+
         stackView.addArrangedSubview(newView, spacingPrev: 77, spacingNext: 88)
 
         XCTAssertEqual(stackView.customSpacing(after: cView), 77)
         XCTAssertEqual(stackView.customSpacing(after: newView), 88)
     }
 
-    func testInsertArrangedSubviewWithCustomSpacingAtPositionSpecifiedByIndex() {
+    func testInsertArrangedSubviewAtIndexCustomSpacing() {
         let stackView = UIStackView(arrangedSubviews: [aView, bView, cView])
-
         let newView = UIView()
+
         stackView.insertArrangedSubview(newView, at: 1, spacingPrev: 77, spacingNext: 88)
 
         XCTAssertEqual(stackView.customSpacing(after: aView), 77)
@@ -66,10 +74,10 @@ final class UIStackViewExtensionTests: XCTestCase {
         XCTAssertEqual(stackView.arrangedSubviews, [aView, newView, bView, cView])
     }
 
-    func testInsertArrangedSubviewWithCustomSpacingBeforeExistingView() {
+    func testInsertArrangedSubviewBeforeExistingViewCustomSpacing() {
         let stackView = UIStackView(arrangedSubviews: [aView, bView, cView])
-
         let newView = UIView()
+
         stackView.insertArrangedSubview(newView, before: cView, spacingPrev: 77, spacingNext: 88)
 
         XCTAssertEqual(stackView.customSpacing(after: bView), 77)
@@ -77,10 +85,10 @@ final class UIStackViewExtensionTests: XCTestCase {
         XCTAssertEqual(stackView.arrangedSubviews, [aView, bView, newView, cView])
     }
 
-    func testInsertArrangedSubviewWithCustomSpacingAfterExistingView() {
+    func testInsertArrangedSubviewAfterExistingViewCustomSpacing() {
         let stackView = UIStackView(arrangedSubviews: [aView, bView, cView])
-
         let newView = UIView()
+
         stackView.insertArrangedSubview(newView, after: cView, spacingPrev: 77, spacingNext: 88)
 
         XCTAssertEqual(stackView.customSpacing(after: cView), 77)
@@ -88,7 +96,7 @@ final class UIStackViewExtensionTests: XCTestCase {
         XCTAssertEqual(stackView.arrangedSubviews, [aView, bView, cView, newView])
     }
 
-    func testInsertAnExistingView_shouldMoveTheExistingViewToNewPosition() {
+    func testInsertArrangedSubview_insertingViewExisting_shouldMoveTheExistingViewToNewPosition() {
         let stackView = UIStackView(arrangedSubviews: [aView, bView, cView, dView])
 
         stackView.insertArrangedSubview(dView, before: aView, spacingPrev: nil, spacingNext: nil)
@@ -96,7 +104,7 @@ final class UIStackViewExtensionTests: XCTestCase {
         XCTAssertEqual(stackView.arrangedSubviews, [dView, aView, bView, cView])
     }
 
-    func testNonExistingReferenceView_shouldRemainUnchanged() {
+    func testInsertArrangedSubview_referenceViewNotExisting_shouldRemainUnchanged() {
         let stackView = UIStackView(arrangedSubviews: [aView, bView, cView])
 
         stackView.insertArrangedSubview(newView, after: dView, spacingPrev: nil, spacingNext: nil)
@@ -104,7 +112,7 @@ final class UIStackViewExtensionTests: XCTestCase {
         XCTAssertEqual(stackView.arrangedSubviews, [aView, bView, cView])
     }
 
-    func testInsertingViewAndReferenceViewAreIdentical_shouldRemainUnchanged() {
+    func testInsertArrangedSubview_insertingAndReferenceViewAreIdentical_shouldRemainUnchanged() {
         let stackView = UIStackView(arrangedSubviews: [aView, bView, cView, dView])
 
         stackView.insertArrangedSubview(bView, before: bView, spacingPrev: nil, spacingNext: nil)
